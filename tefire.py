@@ -71,15 +71,13 @@ st.header("Prism Protocol")
 st.write("Scenario for decomposing annual Luna staking rewards into pLuna-yLuna.")
 
 staking_rewards = luna_staked * luna_apr / 100
-pluna = staking_rewards * pluna_yluna_ratio
-yluna = staking_rewards - pluna
-purchased_yluna = pluna_yluna_ratio / (1 - pluna_yluna_ratio) * pluna
-total_yluna = yluna + purchased_yluna
+purchased_yluna = staking_rewards / (1 - pluna_yluna_ratio)
+total_yluna = staking_rewards + purchased_yluna
 annual_cash_flow = total_yluna * luna_apr * luna_price / 100
 
 st.write(f"Staking Rewards: {staking_rewards:.2f} Luna")
-st.write(f"Decomposed Principal Tokens: {pluna:.2f} pLuna")
-st.write(f"Decomposed Yield Tokens: {yluna:.2f} yLuna")
+st.write(f"Decomposed Principal Tokens to Sell: {staking_rewards:.2f} pLuna")
+st.write(f"Decomposed Yield Tokens: {staking_rewards:.2f} yLuna")
 st.write(f"Total Yield Tokens: {total_yluna:.2f} yLuna")
 st.write(f"Annual Cashflow: ${annual_cash_flow:,.2f}")
 st.write(f"Monthly Cashflow: ${annual_cash_flow/12:,.2f}")
