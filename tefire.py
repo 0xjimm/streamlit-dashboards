@@ -71,8 +71,7 @@ st.header("Prism Protocol")
 st.write("Scenario for decomposing annual Luna staking rewards into pLuna-yLuna.")
 
 staking_rewards = luna_staked * luna_apr / 100
-purchased_yluna = staking_rewards / (1 - pluna_yluna_ratio)
-total_yluna = staking_rewards + purchased_yluna
+total_yluna = staking_rewards / (1 - pluna_yluna_ratio)
 annual_cash_flow = total_yluna * luna_apr * luna_price / 100
 
 st.write(f"Staking Rewards: {staking_rewards:.2f} Luna")
