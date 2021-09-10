@@ -15,6 +15,7 @@ ust_deposited = st.sidebar.number_input(
     min_value=1000,
     max_value=10_000_000_000,
     value=1_000_000,
+    step=1000,
     format="%.2d",
     help="What do you think the future price of Luna will be?",
 )
@@ -144,6 +145,10 @@ if prism_staking_diff > 0:
 elif prism_staking_diff < 0:
     st.markdown(
         f"In this scenario, you would make **${abs(prism_staking_diff):,.2f} less per month** by decomposing and swapping into yLuna versus selling your staking rewards outright."
+    )
+else:
+    st.markdown(
+        "In this scenario, selling your staking rewards and swapping to yLuna would yield the same in terms of monthly income."
     )
 
 st.markdown(
