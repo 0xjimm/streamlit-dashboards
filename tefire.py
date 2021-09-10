@@ -162,7 +162,7 @@ st.markdown(
 
     Feel free to reach out to me on Twitter [@lejimmy](https://twitter.com/lejimmy) if you have any questions or feedback.
      
-    If you're included to contribute directly, please fork the [Github Repo here](https://github.com/lejimmy/streamlit-dashboards).
+    If you're inclined to contribute directly, please fork the [Github Repo here](https://github.com/lejimmy/streamlit-dashboards).
 
     If you'd like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*
     """
