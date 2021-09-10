@@ -36,7 +36,7 @@ luna_staked = st.sidebar.slider(
     min_value=100,
     max_value=20000,
     value=1000,
-    step=1,
+    step=100,
     help="How much Luna do you plan to stake?",
 )
 
@@ -78,8 +78,8 @@ total_yluna = yluna + purchased_yluna
 annual_cash_flow = total_yluna * luna_apr * luna_price / 100
 
 st.write(f"Staking Rewards: {staking_rewards:.2f} Luna")
-st.write(f"Decomposed Principal Token: {pluna:.2f} pLuna")
-st.write(f"Decomposed Yield Token: {yluna:.2f} yLuna")
-st.write(f"Total Yield Token: {total_yluna:.2f} yLuna")
+st.write(f"Decomposed Principal Tokens: {pluna:.2f} pLuna")
+st.write(f"Decomposed Yield Tokens: {yluna:.2f} yLuna")
+st.write(f"Total Yield Tokens: {total_yluna:.2f} yLuna")
 st.write(f"Annual Cashflow: ${annual_cash_flow:,.2f}")
 st.write(f"Monthly Cashflow: ${annual_cash_flow/12:,.2f}")
