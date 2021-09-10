@@ -34,7 +34,7 @@ luna_price = st.sidebar.slider(
 luna_staked = st.sidebar.slider(
     "Staked Luna",
     min_value=100,
-    max_value=10000,
+    max_value=20000,
     value=1000,
     step=1,
     help="How much Luna do you plan to stake?",
