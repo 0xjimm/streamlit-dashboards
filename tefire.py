@@ -72,7 +72,7 @@ st.write("Scenario for decomposing annual Luna staking rewards into pLuna-yLuna.
 
 staking_rewards = luna_staked * luna_apr / 100
 total_yluna = staking_rewards / (1 - pluna_yluna_ratio)
-annual_cash_flow = total_yluna * luna_price / 100
+annual_cash_flow = total_yluna * luna_price
 
 st.write(f"Staking Rewards: {staking_rewards:.2f} Luna")
 st.write(f"Decomposed Principal Tokens to Sell: {staking_rewards:.2f} pLuna")
