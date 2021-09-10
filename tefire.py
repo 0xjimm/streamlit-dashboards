@@ -73,7 +73,7 @@ st.write("Scenario for decomposing annual Luna staking rewards into pLuna-yLuna.
 staking_rewards = luna_staked * luna_apr / 100
 pluna = staking_rewards * pluna_yluna_ratio
 yluna = staking_rewards - pluna
-purchased_yluna = pluna / (1 - pluna_yluna_ratio)
+purchased_yluna = pluna_yluna_ratio / (1 - pluna_yluna_ratio) * pluna
 total_yluna = yluna + purchased_yluna
 annual_cash_flow = total_yluna * luna_apr * luna_price / 100
 
