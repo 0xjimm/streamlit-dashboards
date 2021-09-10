@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Basic setup and app layout
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 st.title("TeFIRE Calculator")
 
 # User inputs on the control panel
