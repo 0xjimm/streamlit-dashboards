@@ -14,13 +14,28 @@ df = pd.read_json(
 # st.set_page_config(layout="wide")
 st.title("Spaceloot Dashboard")
 
-st.header("Transactions Log")
-st.write(df[["BLOCK_ID", "SENDER", "RECIPIENT", "TOKEN_ID"]])
-
 df.set_index("BLOCK_TIMESTAMP", inplace=True)
 df_grouped = df["TX_STATUS"].groupby(pd.Grouper(freq="H")).count()
 
 st.header("Spaceloot Transactions Per Hour")
 st.line_chart(data=df_grouped)
 
-print(df.info())
+# top senders
+st.header("Top Spaceloot Senders")
+st.write(
+    df.groupby("SENDER", as_index=False)["TX_STATUS"]
+    .count()
+    .sort_values(by="TX_STATUS", ascending=False)
+)
+
+# top receivers
+st.header("Top Spaceloot Receivers")
+st.write(
+    df.groupby("RECIPIENT", as_index=False)["TX_STATUS"]
+    .count()
+    .sort_values(by="TX_STATUS", ascending=False)
+)
+
+# raw transactions
+st.header("Transaction History")
+st.write(df[["BLOCK_ID", "SENDER", "RECIPIENT", "TOKEN_ID"]])
