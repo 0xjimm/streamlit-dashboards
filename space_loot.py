@@ -21,7 +21,7 @@ df_claim = (
     .reset_index(drop=True)
     .sort_values(by="TX_STATUS", ascending=False)
 )
-df_claim.rename(columns={"SENDER": "HOLDER", "TX_STATUS": "CLAIMED"}, inplace=True)
+df_claim.rename(columns={"SENDER": "MINTER", "TX_STATUS": "CLAIMED"}, inplace=True)
 
 # load transactions into df
 df_tx = pd.read_json(
@@ -55,12 +55,12 @@ df_received = (
 )
 df_received.rename(columns={"TX_STATUS": "RECEIVED"}, inplace=True)
 
-df_merge = df_claim.merge(df_sent, how="left", left_on="HOLDER", right_on="SENDER")
+df_merge = df_claim.merge(df_sent, how="left", left_on="MINTER", right_on="SENDER")
 df_merge = df_merge.merge(
-    df_received, how="left", left_on="HOLDER", right_on="RECIPIENT"
+    df_received, how="left", left_on="MINTER", right_on="RECIPIENT"
 )
 
-df_merge = df_merge[["HOLDER", "CLAIMED", "RECEIVED", "SENT"]]
+df_merge = df_merge[["MINTER", "CLAIMED", "RECEIVED", "SENT"]]
 df_merge.fillna(0, axis=0, inplace=True)
 df_merge[["CLAIMED", "RECEIVED", "SENT"]] = df_merge[
     ["CLAIMED", "RECEIVED", "SENT"]
