@@ -6,6 +6,7 @@ import pandas as pd
 st.set_page_config(layout="wide")
 st.title("Spaceloot Dashboard")
 
+# flipside crypto queries
 transactions_hash = "0e1550c8-3724-4d93-84e5-76b68b3956d4"
 claim_hash = "9485d2f6-010b-4b06-952e-8dcfc265da53"
 
@@ -38,9 +39,11 @@ df_grouped["SUM"] = df_grouped["TX_STATUS"].cumsum()
 df_grouped = df_grouped[["BLOCK_TIMESTAMP", "SUM"]]
 df_grouped.set_index("BLOCK_TIMESTAMP", inplace=True)
 
+# plot spaceloot transactions over time
 st.header("Spaceloot Transactions Over Time")
 st.line_chart(data=df_grouped)
 
+# find addresses that sent
 df_sent = (
     df_tx.groupby("SENDER", as_index=False)["TX_STATUS"]
     .count()
@@ -48,6 +51,7 @@ df_sent = (
 )
 df_sent.rename(columns={"TX_STATUS": "SENT"}, inplace=True)
 
+# find addresses that received
 df_received = (
     df_tx.groupby("RECIPIENT", as_index=False)["TX_STATUS"]
     .count()
@@ -55,11 +59,11 @@ df_received = (
 )
 df_received.rename(columns={"TX_STATUS": "RECEIVED"}, inplace=True)
 
+# merge all df's together
 df_merge = df_claim.merge(df_sent, how="left", left_on="MINTER", right_on="SENDER")
 df_merge = df_merge.merge(
     df_received, how="left", left_on="MINTER", right_on="RECIPIENT"
 )
-
 df_merge = df_merge[["MINTER", "CLAIMED", "RECEIVED", "SENT"]]
 df_merge.fillna(0, axis=0, inplace=True)
 df_merge[["CLAIMED", "RECEIVED", "SENT"]] = df_merge[
@@ -68,7 +72,8 @@ df_merge[["CLAIMED", "RECEIVED", "SENT"]] = df_merge[
 
 df_merge["TOTAL"] = df_merge["CLAIMED"] + df_merge["RECEIVED"] - df_merge["SENT"]
 
-st.header("Raw Transaction History")
+# display
+st.header("Snapshot Table")
 st.write(df_merge)
 
 # raw transactions
