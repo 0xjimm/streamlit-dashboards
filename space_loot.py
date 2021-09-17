@@ -72,7 +72,7 @@ df_merge[["CLAIMED", "RECEIVED", "SENT"]] = df_merge[
 
 df_merge["TOTAL"] = df_merge["CLAIMED"] + df_merge["RECEIVED"] - df_merge["SENT"]
 
-# display
+# display snapshot table
 st.header("Snapshot Table")
 st.write(df_merge)
 
