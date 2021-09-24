@@ -65,6 +65,9 @@ df_merge = pd.concat(
 # parse uluna amount
 df_merge["amount"] = df_merge["amount"].explode()
 
+# drop missing rows with missing amounts
+df_merge.dropna(axis=0, subset=["amount"], inplace=True)
+
 # parse amount dict
 df_merge["amount"] = pd.json_normalize(df_merge["amount"])["amount"]
 
@@ -77,21 +80,14 @@ df_merge = df_merge.iloc[:, :-1]
 # drop duplicate contract sender columns
 df_merge.drop(columns="sender", axis=1, inplace=True)
 
+# extract columns of itnerest
+df_merge = df_merge[
+    ["TX_ID", "BLOCK_TIMESTAMP_execute_contract", "token_id", "amount", "recipient"]
+]
+
 # rename columns
 df_merge.rename(columns={"recipient": "sender"}, inplace=True)
 df_merge.columns = [*df_merge.columns[:-1], "recipient"]
-
-# extract columns of itnerest
-df_merge = df_merge[
-    [
-        "TX_ID",
-        "BLOCK_TIMESTAMP_execute_contract",
-        "sender",
-        "recipient",
-        "token_id",
-        "amount",
-    ]
-]
 
 # rename columns
 df_merge.rename(
