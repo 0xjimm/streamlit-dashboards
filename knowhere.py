@@ -7,7 +7,7 @@ import json
 st.set_page_config(layout="wide")
 st.title("Spaceloot Knowhere Transfers")
 
-st.warning(
+st.write(
     "If you found this useful and would like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*"
 )
 
