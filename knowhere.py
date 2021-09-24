@@ -122,7 +122,7 @@ fig = px.scatter(
     x="timestamp",
     y="amount",
     color="rarity",
-    color_continuous_scale="Viridis_r",
+    color_continuous_scale="sunsetdark",
 )
 st.plotly_chart(fig, use_container_width=True)
 
@@ -130,18 +130,14 @@ col1, col2 = st.columns(2)
 
 col1.header("Distribution of Sales")
 col1.write("Histogram of auction settlements.")
-fig = px.histogram(df_merge, x="amount", nbins=20)
+fig = px.histogram(df_merge, x="amount", nbins=20, color_discrete_sequence=["#9c179e"])
 col1.plotly_chart(fig, use_container_width=True)
 
 col2.header("Sales Price vs. Rarity")
 col2.markdown(
     "Spaceloot Rarity plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Database.  Smaller scores are more rare."
 )
-fig = px.scatter(
-    df_merge,
-    x="rarity",
-    y="amount",
-)
+fig = px.scatter(df_merge, x="rarity", y="amount", color_discrete_sequence=["#9c179e"])
 col2.plotly_chart(fig, use_container_width=True)
 
 st.header("Transactions Table")
