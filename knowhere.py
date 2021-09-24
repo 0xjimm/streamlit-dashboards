@@ -12,18 +12,53 @@ st.warning(
 )
 
 # load tax query into pandas
-query_id = "e33b0d90-af51-4b41-bc21-1da822567446"
+query_id = "7a881171-55a9-4d67-a170-355c7b6a5728"
 df = pd.read_json(
     f"https://api.flipsidecrypto.com/api/v2/queries/{query_id}/data/latest",
     convert_dates=["BLOCK_TIMESTAMP"],
 )
 
+# pivot table
+df_pivot = df.pivot(
+    index="TX_ID", columns="EVENT_TYPE", values=["EVENT_ATTRIBUTES", "BLOCK_TIMESTAMP"]
+)
+
+# reindex
+df_pivot.columns = ["_".join(tup) for tup in df_pivot.columns.values]
+
+# find messages with 'settle'
+df_pivot = df_pivot[
+    df_pivot["EVENT_ATTRIBUTES_from_contract"].fillna("").str.contains("settle")
+]
+
+# reset index
+df_pivot.reset_index(inplace=True)
+
+# extract columns of interest
+df_pivot = df_pivot[
+    [
+        "TX_ID",
+        "EVENT_ATTRIBUTES_from_contract",
+        "EVENT_ATTRIBUTES_transfer",
+        "BLOCK_TIMESTAMP_execute_contract",
+    ]
+]
+
 # parse raw msg value
-df_merge = pd.concat([df, pd.json_normalize(df["MSG_VALUE"].apply(json.loads))], axis=1)
+df_merge = pd.concat(
+    [
+        df_pivot,
+        pd.json_normalize(df_pivot["EVENT_ATTRIBUTES_from_contract"].apply(json.loads)),
+    ],
+    axis=1,
+)
 
 # parse raw event attributes
 df_merge = pd.concat(
-    [df_merge, pd.json_normalize(df_merge["EVENT_ATTRIBUTES"].apply(json.loads))],
+    [
+        df_merge,
+        pd.json_normalize(df_merge["EVENT_ATTRIBUTES_transfer"].apply(json.loads)),
+    ],
     axis=1,
 )
 
@@ -39,25 +74,28 @@ df_merge["amount"] = df_merge["amount"] / 1_000_000
 # drop duplicate sender column
 df_merge = df_merge.iloc[:, :-1]
 
+# drop duplicate contract sender columns
+df_merge.drop(columns="sender", axis=1, inplace=True)
+
+# rename columns
+df_merge.rename(columns={"recipient": "sender"}, inplace=True)
+df_merge.columns = [*df_merge.columns[:-1], "recipient"]
+
 # extract columns of itnerest
 df_merge = df_merge[
     [
-        "BLOCK_ID",
-        "BLOCK_TIMESTAMP",
+        "TX_ID",
+        "BLOCK_TIMESTAMP_execute_contract",
         "sender",
-        "execute_msg.settle.auction_id",
-        "amount",
         "recipient",
+        "token_id",
+        "amount",
     ]
 ]
 
 # rename columns
 df_merge.rename(
-    columns={
-        "BLOCK_ID": "block_id",
-        "BLOCK_TIMESTAMP": "timestamp",
-        "execute_msg.settle.auction_id": "loot_id",
-    },
+    columns={"TX_ID": "tx_id", "BLOCK_TIMESTAMP_execute_contract": "timestamp"},
     inplace=True,
 )
 
@@ -66,13 +104,13 @@ df_rarity = pd.read_csv("SpaceLoot Rarity Guide w_ Colors - rarity.csv")
 df_rarity = df_rarity[["Token ID", "Bullish Bear Rating"]]
 
 # merge with rarity guide
-df_merge = df_merge.merge(df_rarity, left_on="loot_id", right_on="Token ID")
+df_merge = df_merge.merge(df_rarity, left_on="token_id", right_on="Token ID")
 df_merge.drop("Token ID", axis=1, inplace=True)
 df_merge.rename(columns={"Bullish Bear Rating": "rarity"}, inplace=True)
 
 # reorder columns
 df_merge = df_merge[
-    ["block_id", "timestamp", "sender", "recipient", "loot_id", "rarity", "amount"]
+    ["tx_id", "timestamp", "sender", "recipient", "token_id", "rarity", "amount"]
 ]
 
 col1, col2 = st.columns(2)
