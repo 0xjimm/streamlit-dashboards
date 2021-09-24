@@ -115,7 +115,7 @@ df_merge = df_merge[
 
 st.header("Sales Over Time")
 st.write(
-    "Completed sales over time with rarity as color.  Smaller scores are more rare."
+    "Completed sales over time with rarity rank as color.  Smaller ranks are more rare."
 )
 fig = px.scatter(
     df_merge,
@@ -133,9 +133,9 @@ col1.write("Histogram of auction settlements.")
 fig = px.histogram(df_merge, x="amount", nbins=20, color_discrete_sequence=["#9c179e"])
 col1.plotly_chart(fig, use_container_width=True)
 
-col2.header("Sales Price vs. Rarity")
+col2.header("Sales Price vs. Rarity Rank")
 col2.markdown(
-    "Spaceloot Rarity plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Database.  Smaller scores are more rare."
+    "Spaceloot Rarity Rank plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Rank Database.  Smaller ranks are more rare."
 )
 fig = px.scatter(df_merge, x="rarity", y="amount", color_discrete_sequence=["#9c179e"])
 col2.plotly_chart(fig, use_container_width=True)
