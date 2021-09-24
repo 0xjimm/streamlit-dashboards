@@ -80,7 +80,7 @@ col1.plotly_chart(fig, use_container_width=True)
 
 col2.header("Sales Price vs. Rarity")
 col2.markdown(
-    "Spaceloot Rarity plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Database."
+    "Spaceloot Rarity plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Database.  Smaller scores are more rare."
 )
 fig = px.scatter(df_merge, x="rarity", y="amount")
 col2.plotly_chart(fig, use_container_width=True)
