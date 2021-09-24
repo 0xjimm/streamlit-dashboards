@@ -113,6 +113,19 @@ df_merge = df_merge[
     ["tx_id", "timestamp", "sender", "recipient", "token_id", "rarity", "amount"]
 ]
 
+st.header("Sales Over Time")
+st.write(
+    "Completed sales over time with rarity as color.  Smaller scores are more rare."
+)
+fig = px.scatter(
+    df_merge,
+    x="timestamp",
+    y="amount",
+    color="rarity",
+    color_continuous_scale="Viridis_r",
+)
+st.plotly_chart(fig, use_container_width=True)
+
 col1, col2 = st.columns(2)
 
 col1.header("Distribution of Sales")
@@ -124,7 +137,11 @@ col2.header("Sales Price vs. Rarity")
 col2.markdown(
     "Spaceloot Rarity plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Database.  Smaller scores are more rare."
 )
-fig = px.scatter(df_merge, x="rarity", y="amount")
+fig = px.scatter(
+    df_merge,
+    x="rarity",
+    y="amount",
+)
 col2.plotly_chart(fig, use_container_width=True)
 
 st.header("Transactions Table")
