@@ -66,7 +66,7 @@ luna_apr = st.sidebar.slider(
 pluna_yluna_ratio = st.sidebar.slider(
     "pLuna to yLuna Ratio",
     min_value=0.0,
-    max_value=1.0,
+    max_value=0.99,
     value=0.90,
     step=0.01,
     help="What do you pLuna will be worth relative to yLuna?",
@@ -84,6 +84,10 @@ st.markdown(
 )
 
 st.warning(
+    "If you found this useful and would like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*"
+)
+
+st.error(
     "Disclaimer: This tool was created by a smooth brain.  Do not consider such information as investment advice."
 )
 
@@ -169,6 +173,5 @@ st.markdown(
      
     If you're inclined to contribute directly, please fork the [Github Repo here](https://github.com/lejimmy/streamlit-dashboards).
 
-    If you'd like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*
     """
 )

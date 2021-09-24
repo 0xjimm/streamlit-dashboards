@@ -7,6 +7,10 @@ import json
 st.set_page_config(layout="wide")
 st.title("Spaceloot Knowhere Transfers")
 
+st.warning(
+    "If you found this useful and would like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*"
+)
+
 # load tax query into pandas
 query_id = "e33b0d90-af51-4b41-bc21-1da822567446"
 df = pd.read_json(
@@ -88,3 +92,15 @@ col2.plotly_chart(fig, use_container_width=True)
 st.header("Transactions Table")
 st.write("History of completed auction transfers.")
 st.write(df_merge)
+
+st.markdown("## **Closing Thoughts**")
+st.markdown(
+    f"""
+    I hope this was useful, perhaps a bit insightful, and as always, wagmi.
+
+    Feel free to reach out to me on Twitter [@lejimmy](https://twitter.com/lejimmy) if you have any questions or feedback.
+     
+    If you're inclined to contribute directly, please fork the [Github Repo here](https://github.com/lejimmy/streamlit-dashboards).
+
+    """
+)
