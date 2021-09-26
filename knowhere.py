@@ -167,7 +167,7 @@ filter_v = {}
 for col in df_merge.loc[:, "Vessel Type":"Extra"]:
 
     # list all options
-    options = df_merge[col].unique()
+    options = sorted(df_merge[col].unique())
     atr = st.sidebar.selectbox(col, options=(None, *options))
 
     # add filter to dict
