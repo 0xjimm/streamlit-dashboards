@@ -5,10 +5,17 @@ import json
 
 # Basic setup and app layout
 st.set_page_config(layout="wide")
-st.title("Spaceloot Knowhere Transfers")
+st.title("")
+st.markdown(
+    """
+    # Spaceloot Knowhere Transfers 
+    ### Created by [@lejimmy](https://twitter.com/lejimmy)
+    If you found this useful and would like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*
 
-st.write(
-    "If you found this useful and would like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*"
+    #### Instructions
+    Open the side menu to filter by outliers and attributes.
+
+    """
 )
 
 # load tax query into pandas
@@ -65,10 +72,13 @@ df_merge = pd.concat(
 # parse uluna amount
 df_merge["amount"] = df_merge["amount"].explode()
 
+# drop missing rows with amounts messages
+# df_merge.dropna(axis=0, subset=["amount"], inplace=True)
+
 # parse amount dict
 df_merge["amount"] = pd.json_normalize(df_merge["amount"])["amount"] / 1_000_000
 
-# drop missing rows with missing amounts
+# drop missing rows with missing parsed amounts
 df_merge.dropna(axis=0, subset=["amount"], inplace=True)
 
 # drop duplicate sender column
@@ -94,7 +104,20 @@ df_merge.rename(
 
 # combine with rarity guide
 df_rarity = pd.read_csv("SpaceLoot Rarity Guide w_ Colors - rarity.csv")
-df_rarity = df_rarity[["Token ID", "Bullish Bear Rating"]]
+df_rarity = df_rarity[
+    [
+        "Token ID",
+        "Bullish Bear Rating",
+        "Vessel Type",
+        "Class",
+        "Weapon",
+        "Secondary Weapon",
+        "Shield",
+        "Propulsion",
+        "Material",
+        "Extra",
+    ]
+]
 
 # merge with rarity guide
 df_merge = df_merge.merge(df_rarity, left_on="token_id", right_on="Token ID")
@@ -103,8 +126,60 @@ df_merge.rename(columns={"Bullish Bear Rating": "rarity"}, inplace=True)
 
 # reorder columns
 df_merge = df_merge[
-    ["tx_id", "timestamp", "sender", "recipient", "token_id", "rarity", "amount"]
+    [
+        "tx_id",
+        "timestamp",
+        "sender",
+        "recipient",
+        "token_id",
+        "rarity",
+        "amount",
+        "Vessel Type",
+        "Class",
+        "Weapon",
+        "Secondary Weapon",
+        "Shield",
+        "Propulsion",
+        "Material",
+        "Extra",
+    ]
 ]
+
+
+# side menu
+st.sidebar.header("Settings")
+
+# outlier filters
+st.sidebar.subheader("Remove Outliers")
+sd = st.sidebar.checkbox(
+    "",
+    value=True,
+    help="Remove sales greater than 2 standard deviations.",
+)
+
+if sd > 0:
+    df_merge = df_merge[df_merge["amount"] < df_merge["amount"].std() * 2 * sd]
+
+
+# attribute filter
+st.sidebar.subheader("Ship Attribute Filters")
+filter_v = {}
+for col in df_merge.loc[:, "Vessel Type":"Extra"]:
+
+    # list all options
+    options = df_merge[col].unique()
+    atr = st.sidebar.selectbox(col, options=(None, *options))
+
+    # add filter to dict
+    if atr:
+        filter_v[col] = atr
+
+# if filter dictionary exists, filter by dict
+if len(filter_v) > 0:
+    print(filter_v)
+    df_merge = df_merge.loc[
+        (df_merge[list(filter_v)] == pd.Series(filter_v)).all(axis=1)
+    ]
 
 st.header("Sales Over Time")
 st.write(
@@ -121,9 +196,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 st.header("Distribution of Sales")
 st.write("Histogram of auction settlements.")
-fig = px.histogram(
-    df_merge, x="amount", nbins=1000, color_discrete_sequence=["#9c179e"]
-)
+fig = px.histogram(df_merge, x="amount", nbins=100, color_discrete_sequence=["#9c179e"])
 st.plotly_chart(fig, use_container_width=True)
 
 st.header("Sales Price vs. Rarity Rank")
