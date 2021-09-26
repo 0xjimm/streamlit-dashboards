@@ -65,14 +65,11 @@ df_merge = pd.concat(
 # parse uluna amount
 df_merge["amount"] = df_merge["amount"].explode()
 
+# parse amount dict
+df_merge["amount"] = pd.json_normalize(df_merge["amount"])["amount"] / 1_000_000
+
 # drop missing rows with missing amounts
 df_merge.dropna(axis=0, subset=["amount"], inplace=True)
-
-# parse amount dict
-df_merge["amount"] = pd.json_normalize(df_merge["amount"])["amount"]
-
-# convert to luna
-df_merge["amount"] = df_merge["amount"] / 1_000_000
 
 # drop duplicate sender column
 df_merge = df_merge.iloc[:, :-1]
@@ -122,19 +119,19 @@ fig = px.scatter(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-col1, col2 = st.columns(2)
+st.header("Distribution of Sales")
+st.write("Histogram of auction settlements.")
+fig = px.histogram(
+    df_merge, x="amount", nbins=1000, color_discrete_sequence=["#9c179e"]
+)
+st.plotly_chart(fig, use_container_width=True)
 
-col1.header("Distribution of Sales")
-col1.write("Histogram of auction settlements.")
-fig = px.histogram(df_merge, x="amount", nbins=50, color_discrete_sequence=["#9c179e"])
-col1.plotly_chart(fig, use_container_width=True)
-
-col2.header("Sales Price vs. Rarity Rank")
-col2.markdown(
+st.header("Sales Price vs. Rarity Rank")
+st.markdown(
     "Spaceloot Rarity Rank plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Rank Database.  Smaller ranks are more rare."
 )
 fig = px.scatter(df_merge, x="rarity", y="amount", color_discrete_sequence=["#9c179e"])
-col2.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)
 
 st.header("Transactions Table")
 st.write("History of completed auction transfers.")
