@@ -1,5 +1,6 @@
 import streamlit as st
 import plotly.express as px
+import statsmodels.api as sm
 import pandas as pd
 import json
 
@@ -203,7 +204,15 @@ st.header("Sales Price vs. Rarity Rank")
 st.markdown(
     "Spaceloot Rarity Rank plotted against [Bullish Bear](https://twitter.com/L_BullishBear)'s Rarity Rank Database.  Smaller ranks are more rare."
 )
-fig = px.scatter(df_merge, x="rarity", y="amount", color_discrete_sequence=["#9c179e"])
+fig = px.scatter(
+    df_merge,
+    x="rarity",
+    y="amount",
+    color_discrete_sequence=["#9c179e"],
+    trendline="ols",
+    trendline_options=dict(log_x=True),
+    trendline_color_override="#f0f921",
+)
 st.plotly_chart(fig, use_container_width=True)
 
 st.header("Transactions Table")
