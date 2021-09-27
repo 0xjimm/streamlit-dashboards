@@ -154,7 +154,6 @@ st.sidebar.header("Settings")
 st.sidebar.subheader("Wallet Filter")
 wallet = st.sidebar.text_input(label="Filter by wallet address")
 
-# wallet filter
 if wallet:
     df_merge = df_merge[
         (df_merge["sender"].str.contains(wallet, regex=False))
