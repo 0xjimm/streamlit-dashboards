@@ -150,6 +150,10 @@ df_merge = df_merge[
 # side menu
 st.sidebar.header("Settings")
 
+# address filter
+st.sidebar.subheader("Wallet Filter")
+wallet = st.sidebar.text_input(label="Filter by wallet address")
+
 # outlier filters
 st.sidebar.subheader("Remove Outliers")
 sd = st.sidebar.checkbox(
@@ -157,6 +161,12 @@ sd = st.sidebar.checkbox(
     value=True,
     help="Remove sales greater than 2 standard deviations.",
 )
+
+if wallet:
+    df_merge = df_merge[
+        (df_merge["sender"].str.contains(wallet, regex=False))
+        | (df_merge["recipient"].str.contains(wallet, regex=False))
+    ]
 
 if sd > 0:
     df_merge = df_merge[df_merge["amount"] < df_merge["amount"].std() * 2 * sd]
@@ -181,6 +191,10 @@ if len(filter_v) > 0:
     df_merge = df_merge.loc[
         (df_merge[list(filter_v)] == pd.Series(filter_v)).all(axis=1)
     ]
+
+# length check
+if len(df_merge) == 0:
+    st.warning("Filters produced zero results.  Please try again.")
 
 st.header("Sales Over Time")
 st.write(
