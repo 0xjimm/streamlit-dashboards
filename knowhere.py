@@ -154,6 +154,13 @@ st.sidebar.header("Settings")
 st.sidebar.subheader("Wallet Filter")
 wallet = st.sidebar.text_input(label="Filter by wallet address")
 
+# wallet filter
+if wallet:
+    df_merge = df_merge[
+        (df_merge["sender"].str.contains(wallet, regex=False))
+        | (df_merge["recipient"].str.contains(wallet, regex=False))
+    ]
+
 # outlier filters
 st.sidebar.subheader("Remove Outliers")
 sd = st.sidebar.checkbox(
@@ -161,12 +168,6 @@ sd = st.sidebar.checkbox(
     value=True,
     help="Remove sales greater than 2 standard deviations.",
 )
-
-if wallet:
-    df_merge = df_merge[
-        (df_merge["sender"].str.contains(wallet, regex=False))
-        | (df_merge["recipient"].str.contains(wallet, regex=False))
-    ]
 
 if sd > 0:
     df_merge = df_merge[df_merge["amount"] < df_merge["amount"].std() * 2 * sd]
