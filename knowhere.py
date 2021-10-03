@@ -26,6 +26,8 @@ df = pd.read_json(
     convert_dates=["BLOCK_TIMESTAMP"],
 )
 
+df.drop_duplicates(subset=["TX_ID", "EVENT_TYPE"], inplace=True)
+
 # pivot table
 df_pivot = df.pivot(
     index="TX_ID", columns="EVENT_TYPE", values=["EVENT_ATTRIBUTES", "BLOCK_TIMESTAMP"]
@@ -33,6 +35,7 @@ df_pivot = df.pivot(
 
 # reindex
 df_pivot.columns = ["_".join(tup) for tup in df_pivot.columns.values]
+
 
 # find messages with 'settle'
 df_pivot = df_pivot[
@@ -51,6 +54,7 @@ df_pivot = df_pivot[
         "BLOCK_TIMESTAMP_execute_contract",
     ]
 ]
+
 
 # parse raw msg value
 df_merge = pd.concat(
