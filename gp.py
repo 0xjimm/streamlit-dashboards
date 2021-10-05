@@ -54,7 +54,7 @@ for i, row in df_merge.iterrows():
     cols[0].image(image)
     cols[1].write(row["name"])
     cols[1].write(f"Price: {row['price'] / 1_000_000} LUNA")
-    cols[1].write(f'Ranking: {row["ranking"]}')
-    cols[1].markdown(
-        f'[RandomEarth Link](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})'
+    cols[2].write(f'Ranking: {row["ranking"]}')
+    cols[2].markdown(
+        f'[Link](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})'
     )
