@@ -9,7 +9,6 @@ import asyncio
 from streamlit_autorefresh import st_autorefresh
 
 # st.set_page_config(layout="wide")
-st.title("Galactic Punks")
 
 st.sidebar.header("Options")
 secs = st.sidebar.number_input(
@@ -80,4 +79,10 @@ def display_table():
     pass
 
 
+df_merge["ranking"].mean()
+
+st.title("Galactic Punks")
+st.write("Scrapes the first 3 floor pages.")
+st.write(f"Current floor: {df_merge['price'].min() / 1_000_000} LUNA")
+st.write(f"Current ranking mean: {int(df_merge['ranking'].mean())}")
 display_table()
