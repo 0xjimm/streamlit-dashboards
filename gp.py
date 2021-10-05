@@ -18,7 +18,7 @@ if secs:
     st_autorefresh(interval=secs * 1000, key="dataframerefresh")
 
 responses = []
-for i in range(3):
+for i in range(2):
     response = requests.get(
         url=f"https://randomearth.io/api/items?collection_addr=terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k&sort=price.asc&page={i}&on_sale=1"
     )
