@@ -43,17 +43,21 @@ df_merge.reset_index(drop=True, inplace=True)
 
 
 def display_table():
-    for df_chunk in np.array_split(df_merge, len(df_merge) // 4 + 1):
+    for df_chunk in np.array_split(df_merge, len(df_merge) // 4):
 
         for (i, row), col in zip(df_chunk.iterrows(), st.columns(len(df_chunk))):
 
             with col:
                 st.image(Image.open(BytesIO(requests.get(row["src"]).content)))
-                st.write(row["name"])
-                st.write(f"Price: {row['price'] / 1_000_000} LUNA")
-                st.write(f'Ranking: {row["ranking"]}')
                 st.markdown(
-                    f'[Buy Now](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})'
+                    f"""
+                    [{row["name"][14:]}](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})
+                    <br>
+                    Ask: {row['price'] / 1_000_000} LUNA
+                    <br>
+                    Rank: {row["ranking"]}
+                    """,
+                    unsafe_allow_html=True,
                 )
 
     pass
@@ -70,9 +74,9 @@ st.sidebar.markdown(
     ## Description
     This app will scrape the bottom 3 floor pages, sort and filter by rarity.
 
-    **Floor Price:** {df_merge['price'].min() / 1_000_000} LUNA.
+    **Floor Price:** {df_merge['price'].min() / 1_000_000} LUNA
 
-    **Floor Ranking Mean:** {int(mean)}.  
+    **Floor Ranking Mean:** {int(mean)}
     """
 )
 

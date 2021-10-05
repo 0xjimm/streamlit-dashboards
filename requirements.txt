@@ -79,7 +79,7 @@ six==1.16.0
 smmap==4.0.0
 sniffio==1.2.0
 statsmodels==0.12.2
-streamlit==0.88.0
+streamlit==1.0.0
 streamlit-autorefresh==0.0.1
 tenacity==8.0.1
 terminado==0.12.1
