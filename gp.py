@@ -118,9 +118,10 @@ st.header("Listings")
 st.markdown(
     f"""
     **Floor Price:** {df_merge['price'].min() / 1_000_000} LUNA
-
+    <br>
     **Ranking Mean:** {int(mean)}
-    """
+    """,
+    unsafe_allow_html=True,
 )
 display_table()
 
