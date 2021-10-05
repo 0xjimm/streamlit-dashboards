@@ -38,8 +38,6 @@ def display(col, row):
     ## Price: {row["price"] / 1_000_000} LUNA
     ## Ranking: {row["ranking"]}
     ## Link: [RandomEarth]({row["token_id_x"]})
-
-    ![]({row["src"]})
     """
     )
 
