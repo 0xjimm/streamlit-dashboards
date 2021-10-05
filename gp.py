@@ -52,7 +52,7 @@ for i, row in df_merge.iterrows():
     cols = st.columns(5)
 
     cols[0].image(image)
-    cols[0].write(row["name"])
+    cols[1].write(row["name"])
     cols[1].write(f"Price: {row['price'] / 1_000_000} LUNA")
     cols[1].write(f'Ranking: {row["ranking"]}')
     cols[1].markdown(
