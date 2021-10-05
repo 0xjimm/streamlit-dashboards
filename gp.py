@@ -52,28 +52,11 @@ df_merge.sort_values(by="ranking", ascending=True, inplace=True)
 df_merge.reset_index(drop=True, inplace=True)
 
 
-async def get_images():
-    async with httpx.AsyncClient() as client:
-
-        for i, row in df_merge.iterrows():
-            url = row["src"]
-            try:
-                resp = await client.get(url)
-                df_merge.loc[i, "image"] = resp.content
-            except:
-                df_merge.loc[i, "image"] = None
-
-
 def display_table():
     for i, row in df_merge.iterrows():
 
         cols = st.columns(6)
-
-        if row["image"]:
-            cols[0].image(Image.open(BytesIO(row["image"])))
-        else:
-            cols[0].image(Image.open("placeholder.png"))
-
+        cols[0].image(Image.open(BytesIO(requests.get(row["src"]).content)))
         cols[1].write(row["name"])
         cols[1].write(f"Price: {row['price'] / 1_000_000} LUNA")
         cols[2].write(f'Ranking: {row["ranking"]}')
@@ -88,8 +71,6 @@ mean = df_merge["ranking"].mean()
 
 # remove high ranking floors
 df_merge = df_merge[df_merge["ranking"] < mean]
-
-asyncio.run(get_images())
 
 st.title("Galactic Punks Floor Scraper")
 st.markdown("### Created by [@lejimmy](https://twitter.com/lejimmy)")
