@@ -61,9 +61,6 @@ async def get_images():
             df_merge.loc[i, "image"] = resp.content
 
 
-asyncio.run(get_images())
-
-
 def display_table():
     for i, row in df_merge.iterrows():
 
@@ -79,10 +76,15 @@ def display_table():
     pass
 
 
-df_merge["ranking"].mean()
+mean = df_merge["ranking"].mean()
+
+# remove high ranking floors
+df_merge = df_merge[df_merge["ranking"] < mean]
+
+asyncio.run(get_images())
 
 st.title("Galactic Punks")
 st.write("Scrapes the first 3 floor pages.")
 st.write(f"Current floor: {df_merge['price'].min() / 1_000_000} LUNA")
-st.write(f"Current ranking mean: {int(df_merge['ranking'].mean())}")
+st.write(f"Current ranking mean: {int(mean)}")
 display_table()
