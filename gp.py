@@ -24,6 +24,8 @@ for response in responses:
 
 dfs.reset_index(drop=True, inplace=True)
 
+dfs.drop_duplicates(subset="name", inplace=True)
+
 df_traits = pd.DataFrame([flatten(d) for d in df["traits"].to_list()])
 df_rarity = pd.read_csv("GP Rarity Calculator.csv")
 
