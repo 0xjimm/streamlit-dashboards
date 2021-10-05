@@ -83,8 +83,22 @@ df_merge = df_merge[df_merge["ranking"] < mean]
 
 asyncio.run(get_images())
 
-st.title("Galactic Punks")
-st.write("Scrapes the first 3 floor pages.")
-st.write(f"Current floor: {df_merge['price'].min() / 1_000_000} LUNA")
-st.write(f"Current ranking mean: {int(mean)}")
+st.title("Galactic Punks Floor Scraper")
+st.markdown("### Created by [@lejimmy](https://twitter.com/lejimmy)")
+st.sidebar.markdown(
+    f"""
+    # Description
+    This app will scrape the bottom 3 floor pages, sort and filter by rarity.
+
+    Option to autorefresh in the side menu.
+
+    **Floor Price:** {df_merge['price'].min() / 1_000_000} LUNA.
+
+    **Floor Ranking Mean:** {int(mean)}.  
+    """
+)
+st.write(
+    "Support tools like this by donating here: terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7"
+)
+
 display_table()
