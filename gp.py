@@ -67,10 +67,9 @@ df_merge = df_merge[df_merge["ranking"] < mean]
 
 st.title("Galactic Punks Floor Scraper")
 st.markdown("### Created by [@lejimmy](https://twitter.com/lejimmy)")
-st.sidebar.header("Options")
 st.sidebar.markdown(
     f"""
-    # Description
+    ## Description
     This app will scrape the bottom 3 floor pages, sort and filter by rarity.
 
     **Floor Price:** {df_merge['price'].min() / 1_000_000} LUNA.
@@ -85,6 +84,7 @@ st.write(
 display_table()
 
 # autorefresh
+st.sidebar.header("Options")
 secs = st.sidebar.number_input(
     "Autorefresh Timer", min_value=30, value=180, help="Input time in seconds"
 )
