@@ -81,6 +81,7 @@ st.markdown(
     "**DM [@lejimmy](https://twitter.com/lejimmy) for featured listing inquiries.**"
 )
 
+# featured listings
 f1, f2, f3 = st.columns(3)
 with f1:
     resp = requests.get(
@@ -95,12 +96,12 @@ with f1:
 
 with f2:
     resp = requests.get(
-        "https://cloudflare-ipfs.com/ipfs/QmUg9qnhLdXvRi4z57UvK3pAHLx2VeNwTfA1VfcaozPEnA"
+        "https://cloudflare-ipfs.com/ipfs/QmNpZLgiqFJgsGdc6ryN6RCg7QGtvJCY4PVCGj7ybDgH5q"
     )
     f1_image = Image.open(BytesIO(resp.content))
     st.image(f1_image)
     st.markdown(
-        f"**[Galactic Punk #9911](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_174404845267200243382862455568157033455)**"
+        f"**[Galactic Punk #2129](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_16527000971870193936940145716472017772)**"
     )
 
 with f3:
