@@ -6,9 +6,16 @@ from PIL import Image
 from io import BytesIO
 import httpx
 import asyncio
+from streamlit_autorefresh import st_autorefresh
 
 # st.set_page_config(layout="wide")
 st.title("Galactic Punks")
+
+secs = st.number_input(
+    "Autorefresh Timer", min_value=10, value=60, help="Input time in seconds"
+)
+if secs:
+    st_autorefresh(interval=secs * 1000, key="dataframerefresh")
 
 responses = []
 for i in range(3):
