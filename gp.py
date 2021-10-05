@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
+import numpy as np
 from flatten_json import flatten
 from PIL import Image
 from io import BytesIO
@@ -36,24 +37,24 @@ df_merge.drop(columns="traits", inplace=True)
 
 df_merge = df_merge.merge(df_rarity, on="name")
 
-col1, col2, col3 = st.columns(3)
-
 df_merge.sort_values(by="ranking", ascending=True, inplace=True)
 
 df_merge.reset_index(drop=True, inplace=True)
 
 
 def display_table():
-    for i, row in df_merge.iterrows():
+    for df_chunk in np.array_split(df_merge, len(df_merge) // 4 + 1):
 
-        cols = st.columns(4)
-        cols[0].image(Image.open(BytesIO(requests.get(row["src"]).content)))
-        cols[1].write(row["name"])
-        cols[1].write(f"Price: {row['price'] / 1_000_000} LUNA")
-        cols[2].write(f'Ranking: {row["ranking"]}')
-        cols[2].markdown(
-            f'[Buy Now](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})'
-        )
+        for (i, row), col in zip(df_chunk.iterrows(), st.columns(len(df_chunk))):
+
+            with col:
+                st.image(Image.open(BytesIO(requests.get(row["src"]).content)))
+                st.write(row["name"])
+                st.write(f"Price: {row['price'] / 1_000_000} LUNA")
+                st.write(f'Ranking: {row["ranking"]}')
+                st.markdown(
+                    f'[Buy Now](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})'
+                )
 
     pass
 
