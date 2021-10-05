@@ -7,7 +7,7 @@ import requests
 from flatten_json import flatten
 from PIL import Image
 
-# st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 st.title("Galactic Punks")
 
 
