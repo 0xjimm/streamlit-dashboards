@@ -57,15 +57,23 @@ async def get_images():
 
         for i, row in df_merge.iterrows():
             url = row["src"]
-            resp = await client.get(url)
-            df_merge.loc[i, "image"] = resp.content
+            try:
+                resp = await client.get(url)
+                df_merge.loc[i, "image"] = resp.content
+            except:
+                df_merge.loc[i, "image"] = None
 
 
 def display_table():
     for i, row in df_merge.iterrows():
 
         cols = st.columns(6)
-        cols[0].image(Image.open(BytesIO(row["image"])))
+
+        if row["image"]:
+            cols[0].image(Image.open(BytesIO(row["image"])))
+        else:
+            cols[0].image(Image.open("placeholder.png"))
+
         cols[1].write(row["name"])
         cols[1].write(f"Price: {row['price'] / 1_000_000} LUNA")
         cols[2].write(f'Ranking: {row["ranking"]}')
