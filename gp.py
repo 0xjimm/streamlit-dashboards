@@ -10,13 +10,6 @@ from streamlit_autorefresh import st_autorefresh
 
 # st.set_page_config(layout="wide")
 
-st.sidebar.header("Options")
-secs = st.sidebar.number_input(
-    "Autorefresh Timer", min_value=30, value=60, help="Input time in seconds"
-)
-if secs:
-    st_autorefresh(interval=secs * 1000, key="dataframerefresh")
-
 responses = []
 for i in range(3):
     response = requests.get(
@@ -74,6 +67,7 @@ df_merge = df_merge[df_merge["ranking"] < mean]
 
 st.title("Galactic Punks Floor Scraper")
 st.markdown("### Created by [@lejimmy](https://twitter.com/lejimmy)")
+st.sidebar.header("Options")
 st.sidebar.markdown(
     f"""
     # Description
@@ -89,3 +83,10 @@ st.write(
 )
 
 display_table()
+
+# autorefresh
+secs = st.sidebar.number_input(
+    "Autorefresh Timer", min_value=30, value=180, help="Input time in seconds"
+)
+if secs:
+    st_autorefresh(interval=secs * 1000, key="dataframerefresh")
