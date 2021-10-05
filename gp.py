@@ -7,7 +7,7 @@ import requests
 from flatten_json import flatten
 from PIL import Image
 
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 st.title("Galactic Punks")
 
 
@@ -28,26 +28,23 @@ df_merge.drop(columns="traits", inplace=True)
 
 df_merge = df_merge.merge(df_rarity, on="name")
 
-st.write(df_merge)
+# st.write(df_merge)
 
 
 def display(col, row):
     col.markdown(
         f"""
-    # {row['name']}
-    ## Price: {row["price"] / 1_000_000} LUNA
-    ## Ranking: {row["ranking"]}
-    ## Link: [RandomEarth]({row["token_id_x"]})
+    {row['name']}
+    Price: {row["price"] / 1_000_000} LUNA
+    Ranking: {row["ranking"]}
+    Link: [RandomEarth]({row["token_id_x"]})
     """
     )
 
 
 col1, col2, col3 = st.columns(3)
 
+df_merge.sort_values(by="ranking", ascending=True, inplace=True)
+
 for i, row in df_merge.iterrows():
-    if i // 1:
-        display(col1, row)
-    elif i // 2:
-        display(col2, row)
-    else:
-        display(col3, row)
+    display(st, row)
