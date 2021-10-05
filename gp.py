@@ -11,7 +11,8 @@ from streamlit_autorefresh import st_autorefresh
 # st.set_page_config(layout="wide")
 st.title("Galactic Punks")
 
-secs = st.number_input(
+st.sidebar.header("Options")
+secs = st.sidebar.number_input(
     "Autorefresh Timer", min_value=10, value=60, help="Input time in seconds"
 )
 if secs:
