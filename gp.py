@@ -51,7 +51,7 @@ def display_table():
                 st.image(Image.open(BytesIO(requests.get(row["src"]).content)))
                 st.markdown(
                     f"""
-                    [{row["name"][14:]}](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})
+                    **[{row["name"][14:]}](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})**
                     <br>
                     Ask: {row['price'] / 1_000_000} LUNA
                     <br>
