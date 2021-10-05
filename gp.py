@@ -56,5 +56,5 @@ for i, row in df_merge.iterrows():
     cols[1].write(f"Price: {row['price'] / 1_000_000} LUNA")
     cols[1].write(f'Ranking: {row["ranking"]}')
     cols[1].markdown(
-        f'[Link](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})'
+        f'[RandomEarth Link](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})'
     )
