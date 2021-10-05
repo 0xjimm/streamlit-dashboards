@@ -49,7 +49,7 @@ for i, row in df_merge.iterrows():
 
     image = Image.open(BytesIO(requests.get(row["src"]).content))
 
-    cols = st.columns(2)
+    cols = st.columns(5)
 
     cols[0].image(image)
     cols[0].write(row["name"])
