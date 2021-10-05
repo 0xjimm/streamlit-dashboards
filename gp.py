@@ -4,8 +4,6 @@ import requests
 from flatten_json import flatten
 from PIL import Image
 from io import BytesIO
-import httpx
-import asyncio
 from streamlit_autorefresh import st_autorefresh
 
 # st.set_page_config(layout="wide")
@@ -66,7 +64,6 @@ mean = df_merge["ranking"].mean()
 df_merge = df_merge[df_merge["ranking"] < mean]
 
 st.title("Galactic Punks Floor Scraper")
-st.markdown("### Created by [@lejimmy](https://twitter.com/lejimmy)")
 st.sidebar.markdown(
     f"""
     ## Description
@@ -77,10 +74,46 @@ st.sidebar.markdown(
     **Floor Ranking Mean:** {int(mean)}.  
     """
 )
-st.write(
-    "Support tools like this by donating here: terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7"
+
+st.header("Featured Listings")
+st.markdown(
+    "**DM [@lejimmy](https://twitter.com/lejimmy) for featured listing inquiries.**"
 )
 
+f1, f2, f3 = st.columns(3)
+with f1:
+    resp = requests.get(
+        "https://cloudflare-ipfs.com/ipfs/QmQBjNjtSqkjKxN6UyEvD3G62mRjHWMToCnGKxRP9xT6wJ"
+    )
+    f1_image = Image.open(BytesIO(resp.content))
+    st.image(f1_image)
+    st.markdown(
+        f"**[Galactic Punk #8491](terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_65632299485635998173393205398896215996)**"
+    )
+
+
+with f2:
+    resp = requests.get(
+        "https://cloudflare-ipfs.com/ipfs/QmUg9qnhLdXvRi4z57UvK3pAHLx2VeNwTfA1VfcaozPEnA"
+    )
+    f1_image = Image.open(BytesIO(resp.content))
+    st.image(f1_image)
+    st.markdown(
+        f"**[Galactic Punk #9911](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_174404845267200243382862455568157033455)**"
+    )
+
+with f3:
+    resp = requests.get(
+        "https://cloudflare-ipfs.com/ipfs/QmPC8FCvNvDV9FFLABwbGadBBfAiRfZYkW2u5WpNr6b1Bz"
+    )
+    f1_image = Image.open(BytesIO(resp.content))
+    st.image(f1_image)
+    st.markdown(
+        f"**[Galactic Punk #10552](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_14114733817112864020353362702172799429)**"
+    )
+
+
+st.header("Listings")
 display_table()
 
 # autorefresh
