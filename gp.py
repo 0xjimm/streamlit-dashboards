@@ -90,8 +90,6 @@ st.sidebar.markdown(
     # Description
     This app will scrape the bottom 3 floor pages, sort and filter by rarity.
 
-    Option to autorefresh in the side menu.
-
     **Floor Price:** {df_merge['price'].min() / 1_000_000} LUNA.
 
     **Floor Ranking Mean:** {int(mean)}.  
