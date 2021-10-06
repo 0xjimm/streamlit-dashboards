@@ -35,7 +35,10 @@ secs = st.sidebar.number_input(
 # counter
 if "count" not in st.session_state:
     st.session_state.count = 1
+
 st.sidebar.write(f"Number of views: {st.session_state.count}")
+st.session_state.count += 1
+
 
 responses = []
 for i in range(page_start, page_start + 3, 1):
@@ -157,6 +160,3 @@ display_table()
 # auto refresher
 if secs:
     st_autorefresh(interval=secs * 1000, key="dataframerefresh")
-
-# counter
-st.session_state.count += 1
