@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from PIL import Image
-from io import BytesIO
 from flatten_json import flatten
 from streamlit_autorefresh import st_autorefresh
 
@@ -108,10 +106,8 @@ for line in rand_lines:
 # display featured punks
 for feat, col in zip(featured, st.columns(len(featured))):
     with col:
-        resp = requests.get(feat["src"])
-        f1_image = Image.open(BytesIO(resp.content))
+        col.image(feat["src"])
         rank = df_rarity[df_rarity["name"] == feat["name"]]["ranking"].values[0]
-        st.image(f1_image)
 
         # catch unlisted features
         try:
@@ -147,7 +143,7 @@ def display_table():
         for (i, row), col in zip(df_chunk.iterrows(), st.columns(len(df_chunk))):
 
             with col:
-                st.image(Image.open(BytesIO(requests.get(row["src"]).content)))
+                st.image(row["src"])
                 st.markdown(
                     f"""
                     **[{row["name"][14:]}](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{row["token_id_x"]})**
