@@ -104,7 +104,12 @@ for feat, col in zip(rand_feat, st.columns(len(rand_feat))):
     with col:
         resp = requests.get(feat["src"])
         f1_image = Image.open(BytesIO(resp.content))
-        rank = df_rarity[df_rarity["name"] == feat["name"]]["ranking"].values[0]
+
+        try:
+            rank = df_rarity[df_rarity["name"] == feat["name"]]["ranking"].values[0]
+        except:
+            rank = "Unknown"
+
         st.image(f1_image)
         st.markdown(
             f"""
@@ -112,7 +117,7 @@ for feat, col in zip(rand_feat, st.columns(len(rand_feat))):
             <br>
             Ask: {feat['price'] / 1_000_000:,} Luna
             <br>
-            Rank: {rank:,}
+            Rank: {rank}
             """,
             unsafe_allow_html=True,
         )
