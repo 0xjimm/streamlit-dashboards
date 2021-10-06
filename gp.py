@@ -91,8 +91,13 @@ mean = df_merge["ranking"].mean()
 # remove high ranking floors
 df_merge = df_merge[df_merge["ranking"] < mean]
 
-st.title("Galactic Punks Floor Scraper")
-
+st.markdown(
+    """
+    # Galactic Punks Floor Scraper
+    ### Created by [@lejimmy](https://twitter.com/lejimmy)
+    If you found this useful and would like to support more of this type of work, consider contributing to my wallet here: *terra1m3sl9qea92km6mqm02yqxfygn8g9acl8wzj6x7*
+    """
+)
 
 st.header("Featured Listings")
 st.markdown(
