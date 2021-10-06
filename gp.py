@@ -85,37 +85,45 @@ st.markdown(
 with open("featured.txt") as f:
     lines = f.readlines()
 
+# sample 3
+rand_lines = random.sample(lines, 3)
+
 # extract relevant information
 featured = []
-for line in lines:
+for line in rand_lines:
     resp = requests.get(
         f"https://randomearth.io/api/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{line.strip()}"
     )
     gp = resp.json()["item"]
     featured.append(
-        {"name": gp["name"], "price": gp["price"], "slug": gp["slug"], "src": gp["src"]}
+        {
+            "name": gp["name"],
+            "price": gp["price"],
+            "slug": gp["slug"],
+            "src": gp["src"],
+        }
     )
 
-# sample 3
-rand_feat = random.sample(featured, 3)
 
 # display featured punks
-for feat, col in zip(rand_feat, st.columns(len(rand_feat))):
+for feat, col in zip(featured, st.columns(len(featured))):
     with col:
         resp = requests.get(feat["src"])
         f1_image = Image.open(BytesIO(resp.content))
-
-        try:
-            rank = df_rarity[df_rarity["name"] == feat["name"]]["ranking"].values[0]
-        except:
-            rank = "Unknown"
-
+        rank = df_rarity[df_rarity["name"] == feat["name"]]["ranking"].values[0]
         st.image(f1_image)
+
+        # catch unlisted features
+        try:
+            price = f'{feat["price"] / 1_000_000:,} Luna'
+        except:
+            price = "Not listed."
+
         st.markdown(
             f"""
-            **[{feat['name']}]({feat['src']})**
+            **[{feat['name']}](https://randomearth.io/items/{feat['slug']})**
             <br>
-            Ask: {feat['price'] / 1_000_000:,} Luna
+            Ask: {price}
             <br>
             Rank: {rank}
             """,
