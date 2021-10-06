@@ -28,7 +28,7 @@ page_start = int(
 )
 
 secs = st.sidebar.number_input(
-    "Autorefresh Timer", min_value=30, value=120, help="Input time in seconds"
+    "Autorefresh Timer", min_value=30, value=180, help="Input time in seconds"
 )
 
 
