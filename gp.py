@@ -8,9 +8,29 @@ from io import BytesIO
 from streamlit_autorefresh import st_autorefresh
 
 # st.set_page_config(layout="wide")
+st.sidebar.markdown(
+    f"""
+    ## Description
+    This app seeks to help you find deals on your Galactic Punks!
+    This app will scrape three pages, sort and filter by rarity.
+    """
+)
+# autorefresh
+st.sidebar.header("Options")
+
+page_start = st.sidebar.number_input(
+    "Starting Page Number", min_value=1, value=1, help="Page to begin scraping."
+)
+
+secs = st.sidebar.number_input(
+    "Autorefresh Timer", min_value=30, value=120, help="Input time in seconds"
+)
+if secs:
+    st_autorefresh(interval=secs * 1000, key="dataframerefresh")
+
 
 responses = []
-for i in range(3):
+for i in range(page_start, page_start + 3):
     response = requests.get(
         url=f"https://randomearth.io/api/items?collection_addr=terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k&sort=price.asc&page={i}&on_sale=1"
     )
@@ -43,7 +63,7 @@ df_merge.reset_index(drop=True, inplace=True)
 
 
 def display_table():
-    for df_chunk in np.array_split(df_merge, len(df_merge) // 4):
+    for df_chunk in np.array_split(df_merge, len(df_merge) // 6 + 1):
 
         for (i, row), col in zip(df_chunk.iterrows(), st.columns(len(df_chunk))):
 
@@ -69,12 +89,7 @@ mean = df_merge["ranking"].mean()
 df_merge = df_merge[df_merge["ranking"] < mean]
 
 st.title("Galactic Punks Floor Scraper")
-st.sidebar.markdown(
-    f"""
-    ## Description
-    This app will scrape the bottom 3 floor pages, sort and filter by rarity.
-    """
-)
+
 
 st.header("Featured Listings")
 st.markdown(
@@ -125,11 +140,3 @@ st.markdown(
     unsafe_allow_html=True,
 )
 display_table()
-
-# autorefresh
-st.sidebar.header("Options")
-secs = st.sidebar.number_input(
-    "Autorefresh Timer", min_value=30, value=180, help="Input time in seconds"
-)
-if secs:
-    st_autorefresh(interval=secs * 1000, key="dataframerefresh")
