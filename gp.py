@@ -1,13 +1,15 @@
-import streamlit as st
-import pandas as pd
 import requests
 import numpy as np
-from flatten_json import flatten
+import pandas as pd
+import streamlit as st
+
 from PIL import Image
 from io import BytesIO
+from flatten_json import flatten
 from streamlit_autorefresh import st_autorefresh
 
-# st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")
+
 st.sidebar.markdown(
     f"""
     ## Description
@@ -15,7 +17,6 @@ st.sidebar.markdown(
     This app will scrape three pages, sort and filter by rarity.
     """
 )
-# autorefresh
 st.sidebar.header("Options")
 
 page_start = int(
@@ -31,6 +32,10 @@ secs = st.sidebar.number_input(
     "Autorefresh Timer", min_value=30, value=180, help="Input time in seconds"
 )
 
+# counter
+if "count" not in st.session_state:
+    st.session_state.count = 1
+st.sidebar.write(f"Number of views: {st.session_state.count}")
 
 responses = []
 for i in range(page_start, page_start + 3, 1):
@@ -152,3 +157,6 @@ display_table()
 # auto refresher
 if secs:
     st_autorefresh(interval=secs * 1000, key="dataframerefresh")
+
+# counter
+st.session_state.count += 1
