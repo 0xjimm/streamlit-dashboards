@@ -11,6 +11,7 @@ from streamlit_autorefresh import st_autorefresh
 
 st.set_page_config(layout="wide")
 
+# sidebar information
 st.sidebar.markdown(
     f"""
     ## Description
@@ -114,6 +115,13 @@ featured = [
         "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_24143141112080848145913303035941697837",
         "rank": 125,
         "price": 2500,
+    },
+    {
+        "name": "Galactic Punk #6494",
+        "img": "https://cloudflare-ipfs.com/ipfs/QmUobtNhb9CdL84NKzXTCU3BGBqAqBVZi2tMbadtceuLfn",
+        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_109618086436110522639007560686842199046",
+        "rank": 1557,
+        "price": 325,
     },
 ]
 
