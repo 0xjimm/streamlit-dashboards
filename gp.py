@@ -123,6 +123,13 @@ featured = [
         "rank": 1557,
         "price": 325,
     },
+    {
+        "name": "Galactic Punk #3918",
+        "img": "https://cloudflare-ipfs.com/ipfs/QmVc7asKMdvrvQRtm9evCJpEC7Gb7Eqkeus9BCghXASgWr",
+        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_219192806697718739956888622052907525661",
+        "rank": 2111,
+        "price": 400,
+    },
 ]
 
 rand_feat = random.sample(featured, 3)
@@ -138,7 +145,7 @@ for feat, col in zip(rand_feat, st.columns(len(rand_feat))):
             <br>
             Ask: {feat['price']:,} Luna
             <br>
-            Rank: {feat['rank']}
+            Rank: {feat['rank']:,}
         
         """,
             unsafe_allow_html=True,
