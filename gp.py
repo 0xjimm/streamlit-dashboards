@@ -19,14 +19,15 @@ st.sidebar.markdown(
 st.sidebar.header("Options")
 
 page_start = st.sidebar.number_input(
-    "Starting Page Number", min_value=1, value=1, help="Page to begin scraping."
+    "Starting Page Number",
+    min_value=1,
+    value=1,
+    help="Page to begin scraping.",
 )
 
 secs = st.sidebar.number_input(
     "Autorefresh Timer", min_value=30, value=120, help="Input time in seconds"
 )
-if secs:
-    st_autorefresh(interval=secs * 1000, key="dataframerefresh")
 
 
 responses = []
@@ -140,3 +141,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 display_table()
+
+# auto refresher
+if secs:
+    st_autorefresh(interval=secs * 1000, key="dataframerefresh")
