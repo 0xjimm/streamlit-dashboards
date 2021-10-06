@@ -116,20 +116,6 @@ featured = [
         "rank": 125,
         "price": 2500,
     },
-    {
-        "name": "Galactic Punk #6494",
-        "img": "https://cloudflare-ipfs.com/ipfs/QmUobtNhb9CdL84NKzXTCU3BGBqAqBVZi2tMbadtceuLfn",
-        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_109618086436110522639007560686842199046",
-        "rank": 1557,
-        "price": 325,
-    },
-    {
-        "name": "Galactic Punk #3918",
-        "img": "https://cloudflare-ipfs.com/ipfs/QmVc7asKMdvrvQRtm9evCJpEC7Gb7Eqkeus9BCghXASgWr",
-        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_219192806697718739956888622052907525661",
-        "rank": 2111,
-        "price": 200,
-    },
 ]
 
 rand_feat = random.sample(featured, 3)
