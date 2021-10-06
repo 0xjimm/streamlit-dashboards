@@ -128,7 +128,7 @@ featured = [
         "img": "https://cloudflare-ipfs.com/ipfs/QmVc7asKMdvrvQRtm9evCJpEC7Gb7Eqkeus9BCghXASgWr",
         "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_219192806697718739956888622052907525661",
         "rank": 2111,
-        "price": 400,
+        "price": 200,
     },
 ]
 
