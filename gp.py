@@ -68,9 +68,6 @@ df_merge.reset_index(drop=True, inplace=True)
 
 mean = df_merge["ranking"].mean()
 
-# remove high ranking floors
-df_merge = df_merge[df_merge["ranking"] < mean]
-
 st.markdown(
     """
     # Galactic Punks Floor Scraper
@@ -84,66 +81,41 @@ st.markdown(
     "**DM [@lejimmy](https://twitter.com/lejimmy) for featured listing inquiries.**"
 )
 
-# featured listings
-f1, f2, f3 = st.columns(3)
+# open featured text file
+with open("featured.txt") as f:
+    lines = f.readlines()
 
-featured = [
-    {
-        "name": "Galactic Punk #8491",
-        "img": "https://cloudflare-ipfs.com/ipfs/QmQBjNjtSqkjKxN6UyEvD3G62mRjHWMToCnGKxRP9xT6wJ",
-        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_65632299485635998173393205398896215996",
-        "rank": 563,
-        "price": 10000,
-    },
-    {
-        "name": "Galactic Punk #542",
-        "img": "https://cloudflare-ipfs.com/ipfs/QmcKk891vg2vFGcNpYQKG3dq8RyGkbQq9M8rjXs6nr7SqK",
-        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_173147050430553848553565161311621655916",
-        "rank": 679,
-        "price": 450,
-    },
-    {
-        "name": "Galactic Punk #8408",
-        "img": "https://cloudflare-ipfs.com/ipfs/Qmf6D5EeMWbvuyVuN6g96kz19YK9C6zqBsCnDZNkgzvyy1",
-        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_88140778103769665125156188028733008500",
-        "rank": 5470,
-        "price": 150,
-    },
-    {
-        "name": "Galactic Punk #7445",
-        "img": "https://cloudflare-ipfs.com/ipfs/QmdcptZ94i9fTpcdd8GTbdYunUefgRpKA4jzxiXvGcjV5d",
-        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_24143141112080848145913303035941697837",
-        "rank": 125,
-        "price": 2500,
-    },
-    {
-        "name": "Galactic Punk #228",
-        "img": "https://cloudflare-ipfs.com/ipfs/QmdPMUj1y6bi4LfNvNrqwbuA5EUsEtsNHpvzQ5KqQLN9MY",
-        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_198208714850286871648308926651164189892",
-        "rank": 3196,
-        "price": 3000,
-    },
-]
+# extract relevant information
+featured = []
+for line in lines:
+    resp = requests.get(
+        f"https://randomearth.io/api/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{line.strip()}"
+    )
+    gp = resp.json()["item"]
+    featured.append(
+        {"name": gp["name"], "price": gp["price"], "slug": gp["slug"], "src": gp["src"]}
+    )
 
+# sample 3
 rand_feat = random.sample(featured, 3)
 
+# display featured punks
 for feat, col in zip(rand_feat, st.columns(len(rand_feat))):
     with col:
-        resp = requests.get(feat["img"])
+        resp = requests.get(feat["src"])
         f1_image = Image.open(BytesIO(resp.content))
+        rank = df_rarity[df_rarity["name"] == feat["name"]]["ranking"].values[0]
         st.image(f1_image)
         st.markdown(
             f"""
-            **[{feat['name']}]({feat['url']})**
+            **[{feat['name']}]({feat['src']})**
             <br>
-            Ask: {feat['price']:,} Luna
+            Ask: {feat['price'] / 1_000_000:,} Luna
             <br>
-            Rank: {feat['rank']:,}
-        
-        """,
+            Rank: {rank:,}
+            """,
             unsafe_allow_html=True,
         )
-
 
 st.header("Listings")
 st.markdown(
@@ -176,6 +148,9 @@ def display_table():
 
     pass
 
+
+# remove high ranking floors
+df_merge = df_merge[df_merge["ranking"] < mean]
 
 display_table()
 
