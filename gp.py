@@ -116,6 +116,13 @@ featured = [
         "rank": 125,
         "price": 2500,
     },
+    {
+        "name": "Galactic Punk #228",
+        "img": "https://cloudflare-ipfs.com/ipfs/QmdPMUj1y6bi4LfNvNrqwbuA5EUsEtsNHpvzQ5KqQLN9MY",
+        "url": "https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_198208714850286871648308926651164189892",
+        "rank": 3196,
+        "price": 3000,
+    },
 ]
 
 rand_feat = random.sample(featured, 3)
