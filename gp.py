@@ -81,26 +81,31 @@ st.markdown(
 
 # open featured text file
 with open("featured.txt") as f:
-    lines = f.readlines()
+    lines = [tuple(map(str, i.split(","))) for i in f]
 
-# sample 3
-rand_lines = random.sample(lines, 3)
+# shuffle list
+random.shuffle(lines)
 
 # extract relevant information
 featured = []
-for line in rand_lines:
+for line, address in lines:
     resp = requests.get(
         f"https://randomearth.io/api/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_{line.strip()}"
     )
     gp = resp.json()["item"]
-    featured.append(
-        {
-            "name": gp["name"],
-            "price": gp["price"],
-            "slug": gp["slug"],
-            "src": gp["src"],
-        }
-    )
+    owner = gp["user_addr"]
+    if owner == address.strip():
+        featured.append(
+            {
+                "name": gp["name"],
+                "price": gp["price"],
+                "slug": gp["slug"],
+                "src": gp["src"],
+            }
+        )
+
+    if len(featured) >= 3:
+        break
 
 
 # display featured punks
