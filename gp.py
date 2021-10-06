@@ -113,7 +113,7 @@ with f1:
     f1_image = Image.open(BytesIO(resp.content))
     st.image(f1_image)
     st.markdown(
-        f"**[Galactic Punk #8491](terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_65632299485635998173393205398896215996)**"
+        f"**[Galactic Punk #8491](https://randomearth.io/items/terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k_65632299485635998173393205398896215996)**"
     )
 
 
