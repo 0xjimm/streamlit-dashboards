@@ -18,11 +18,13 @@ st.sidebar.markdown(
 # autorefresh
 st.sidebar.header("Options")
 
-page_start = st.sidebar.number_input(
-    "Starting Page Number",
-    min_value=1,
-    value=1,
-    help="Page to begin scraping.",
+page_start = int(
+    st.sidebar.number_input(
+        "Starting Page Number",
+        min_value=1,
+        value=1,
+        help="Page to begin scraping.",
+    )
 )
 
 secs = st.sidebar.number_input(
@@ -31,7 +33,7 @@ secs = st.sidebar.number_input(
 
 
 responses = []
-for i in range(page_start, page_start + 3):
+for i in range(page_start, page_start + 3, 1):
     response = requests.get(
         url=f"https://randomearth.io/api/items?collection_addr=terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k&sort=price.asc&page={i}&on_sale=1"
     )
