@@ -19,6 +19,8 @@ st.sidebar.markdown(
 )
 st.sidebar.header("Options")
 
+rarity_method = st.sidebar.selectbox("Rarity Method", options=["Official", "Wengzilla"])
+
 page_start = int(
     st.sidebar.number_input(
         "Starting Page Number",
@@ -101,35 +103,35 @@ for line, address in lines:
                 "price": gp["price"],
                 "slug": gp["slug"],
                 "src": gp["src"],
+                "rarity": gp["rarity"],
             }
         )
+    else:
+        print(f'Featured GP that is unsold: https://randomearth.io/items/{gp["slug"]}')
 
     if len(featured) >= 3:
         break
-
 
 # display featured punks
 for feat, col in zip(featured, st.columns(len(featured))):
     with col:
         col.image(feat["src"])
-        rank = df_rarity[df_rarity["name"] == feat["name"]]["ranking"].values[0]
 
         # catch unlisted features
         try:
             price = f'{feat["price"] / 1_000_000:,} Luna'
         except:
-            price = "Not listed."
+            price = "Not listed"
 
         st.markdown(
             f"""
             **[{feat['name']}](https://randomearth.io/items/{feat['slug']})**
             <br>
             Ask: {price}
-            <br>
-            Rank: {rank}
             """,
             unsafe_allow_html=True,
         )
+
 
 st.header("Listings")
 st.markdown(
@@ -147,6 +149,11 @@ def display_table():
 
         for (i, row), col in zip(df_chunk.iterrows(), st.columns(len(df_chunk))):
 
+            if rarity_method == "Official":
+                rarity = row["rarity"]
+            elif rarity_method == "Wengzilla":
+                rarity = row["ranking"]
+
             with col:
                 st.image(row["src"])
                 st.markdown(
@@ -155,7 +162,7 @@ def display_table():
                     <br>
                     Ask: {row['price'] / 1_000_000:,} Luna
                     <br>
-                    Rank: {row["ranking"]:,}
+                    Rarity: {int(rarity)}
                     """,
                     unsafe_allow_html=True,
                 )
