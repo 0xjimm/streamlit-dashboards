@@ -19,7 +19,9 @@ st.sidebar.markdown(
 )
 st.sidebar.header("Options")
 
-rarity_method = st.sidebar.selectbox("Rarity Method", options=["Official", "Wengzilla"])
+rarity_method = st.sidebar.selectbox(
+    "Rarity Method", options=["Official", "Tero0x", "Wengzilla"]
+)
 
 page_start = int(
     st.sidebar.number_input(
@@ -51,12 +53,18 @@ dfs.reset_index(drop=True, inplace=True)
 dfs.drop_duplicates(subset="name", inplace=True)
 
 df_traits = pd.DataFrame([flatten(d) for d in df["traits"].to_list()])
-df_rarity = pd.read_csv("GP Rarity Calculator.csv")
+
+if rarity_method == "Wengzilla":
+    df_rarity = pd.read_csv("Wengzilla.csv")
+else:
+    df_rarity = pd.read_csv("Tero0x.csv")
 
 df_merge = pd.concat(
     [dfs, df_traits],
     axis=1,
 )
+
+df_rarity = df_rarity[["name", "ranking", "token_id"]]
 
 df_merge.drop(columns="traits", inplace=True)
 
@@ -67,6 +75,9 @@ df_merge.sort_values(by="ranking", ascending=True, inplace=True)
 df_merge.reset_index(drop=True, inplace=True)
 
 mean = df_merge["ranking"].mean()
+
+# clear from memory unused ranks
+del (df, dfs, df_rarity, df_traits)
 
 st.markdown(
     """
@@ -151,7 +162,7 @@ def display_table():
 
             if rarity_method == "Official":
                 rarity = row["rarity"]
-            elif rarity_method == "Wengzilla":
+            else:
                 rarity = row["ranking"]
 
             with col:
