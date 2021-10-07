@@ -20,7 +20,8 @@ st.sidebar.markdown(
 st.sidebar.header("Options")
 
 rarity_method = st.sidebar.selectbox(
-    "Rarity Method", options=["Official", "Tero0x", "Wengzilla"]
+    "Rarity Method",
+    options=["Tero0x", "Official", "Wengzilla"],
 )
 
 page_start = int(
