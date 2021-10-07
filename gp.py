@@ -74,7 +74,12 @@ df_merge.sort_values(by="ranking", ascending=True, inplace=True)
 
 df_merge.reset_index(drop=True, inplace=True)
 
-mean = df_merge["ranking"].mean()
+if rarity_method == "Official":
+    rank_col = "rarity"
+else:
+    rank_col = "ranking"
+
+mean = df_merge[rank_col].mean()
 
 # clear from memory unused ranks
 del (df, dfs, df_rarity, df_traits)
@@ -160,11 +165,6 @@ def display_table():
 
         for (i, row), col in zip(df_chunk.iterrows(), st.columns(len(df_chunk))):
 
-            if rarity_method == "Official":
-                rarity = row["rarity"]
-            else:
-                rarity = row["ranking"]
-
             with col:
                 st.image(row["src"])
                 st.markdown(
@@ -173,7 +173,7 @@ def display_table():
                     <br>
                     Ask: {row['price'] / 1_000_000:,} Luna
                     <br>
-                    Rarity: {int(rarity)}
+                    Rarity: {int(row[rank_col])}
                     """,
                     unsafe_allow_html=True,
                 )
@@ -182,7 +182,7 @@ def display_table():
 
 
 # remove high ranking floors
-df_merge = df_merge[df_merge["ranking"] < mean]
+df_merge = df_merge[df_merge[rank_col] < mean]
 
 display_table()
 
