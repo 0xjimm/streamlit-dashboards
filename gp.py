@@ -70,14 +70,16 @@ df_merge.drop(columns="traits", inplace=True)
 
 df_merge = df_merge.merge(df_rarity, on="name")
 
-df_merge.sort_values(by="ranking", ascending=True, inplace=True)
-
-df_merge.reset_index(drop=True, inplace=True)
 
 if rarity_method == "Official":
     rank_col = "rarity"
+    df_merge.sort_values(by="rarity", ascending=False, inplace=True)
 else:
     rank_col = "ranking"
+    df_merge.sort_values(by="ranking", ascending=True, inplace=True)
+
+
+df_merge.reset_index(drop=True, inplace=True)
 
 mean = df_merge[rank_col].mean()
 
