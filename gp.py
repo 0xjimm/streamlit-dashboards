@@ -74,7 +74,7 @@ for i in range(page_start, page_start + 3, 1):
 
 dfs = pd.DataFrame()
 for response in responses:
-    st.print(response)
+    st.write(response)
     df = pd.DataFrame(response.json()["items"])
     dfs = pd.concat([dfs, df])
 
