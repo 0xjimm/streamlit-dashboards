@@ -73,7 +73,7 @@ for response in responses:
         df = pd.DataFrame(response.json()["items"])
         dfs = pd.concat([dfs, df])
     except Exception as e:
-        st.warning(f"Oops, I think we broke it...: {e}")
+        st.warning(f"Oops, I think we broke it again: {e}")
         st.stop()
 
 dfs.reset_index(drop=True, inplace=True)
