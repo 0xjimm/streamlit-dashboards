@@ -1,3 +1,4 @@
+import os
 import random
 import requests
 import numpy as np
@@ -37,10 +38,37 @@ secs = st.sidebar.number_input(
     "Autorefresh Timer", min_value=30, value=180, help="Input time in seconds"
 )
 
+# get proxy
+def get_proxy_list(webshare_key):
+
+    response = requests.get(
+        "https://proxy.webshare.io/api/proxy/list/?page=1&countries=US",
+        headers={"Authorization": f"Token {webshare_key}"},
+    )
+
+    proxy_list = response.json()["results"]
+
+    return proxy_list
+
+
+# select random proxy
+def get_random_proxy(proxy_list):
+
+    proxy = random.choice(proxy_list)
+
+    return {
+        "http": f'http://{proxy["username"]}:{proxy["password"]}@{proxy["proxy_address"]}:{proxy["ports"]["http"]}',
+    }
+
+
+# get proxy
+proxy = get_random_proxy(get_proxy_list(os.environ["WEBSHARE_KEY"]))
+
 responses = []
 for i in range(page_start, page_start + 3, 1):
     response = requests.get(
-        url=f"https://randomearth.io/api/items?collection_addr=terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k&sort=price.asc&page={i}&on_sale=1"
+        url=f"https://randomearth.io/api/items?collection_addr=terra103z9cnqm8psy0nyxqtugg6m7xnwvlkqdzm4s4k&sort=price.asc&page={i}&on_sale=1",
+        proxies=proxy,
     )
     responses.append(response)
 
