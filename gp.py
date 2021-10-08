@@ -68,8 +68,13 @@ for i in range(page_start, page_start + 3, 1):
 
 dfs = pd.DataFrame()
 for response in responses:
-    df = pd.DataFrame(response.json()["items"])
-    dfs = pd.concat([dfs, df])
+
+    try:
+        df = pd.DataFrame(response.json()["items"])
+        dfs = pd.concat([dfs, df])
+    except Exception as e:
+        st.warning(f"Oops, I think we broke it...: {e}")
+        st.stop()
 
 dfs.reset_index(drop=True, inplace=True)
 
